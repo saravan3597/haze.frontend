@@ -1,0 +1,23 @@
+.confirmation-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #000000;
+  color: #ffffff;
+  font-family: 'Source Sans Pro', -apple-system, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  padding: 14px 20px;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.confirmation-bar--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
