@@ -1,0 +1,43 @@
+.home-page {
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  height: 100%;
+}
+
+.home-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #f7f7f7;
+  border-bottom: 1px solid #ebebeb;
+}
+
+.canvas-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.wallpaper-canvas {
+  /* Fill available height, maintain 9:16 ratio */
+  height: 100%;
+  width: auto;
+  max-width: 100%;
+  display: block;
+  transition: opacity 0.18s ease;
+}
+
+.wallpaper-canvas--fading {
+  opacity: 0;
+}
+
+.action-bar-wrapper {
+  position: relative;
+  flex-shrink: 0;
+}

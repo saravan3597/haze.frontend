@@ -1,0 +1,42 @@
+.action-bar {
+  display: flex;
+  align-items: stretch;
+  background: #ffffff;
+  border-top: 1px solid #ebebeb;
+  flex-shrink: 0;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.action-bar__btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px 12px;
+  background: none;
+  border: none;
+  font-family: 'Source Sans Pro', -apple-system, sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #000000;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.1s;
+}
+
+.action-bar__btn:active {
+  background: #f5f5f5;
+}
+
+.action-bar__btn:disabled {
+  color: #767676;
+  cursor: default;
+}
+
+.action-bar__divider {
+  width: 1px;
+  background: #ebebeb;
+  align-self: stretch;
+  margin: 8px 0;
+}

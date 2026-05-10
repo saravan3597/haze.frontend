@@ -1,0 +1,80 @@
+.settings-content {
+  --background: #ffffff;
+}
+
+.settings-body {
+  padding: 24px 24px 40px;
+}
+
+.settings-title {
+  font-family: 'Source Sans Pro', -apple-system, sans-serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: #111111;
+  margin: 0 0 24px;
+  letter-spacing: -0.01em;
+}
+
+.settings-section {
+  margin-bottom: 20px;
+}
+
+.settings-label {
+  font-family: 'Source Sans Pro', -apple-system, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #767676;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0 0 10px;
+}
+
+.settings-palette-row {
+  display: flex;
+  gap: 0;
+  border: 1px solid #ebebeb;
+}
+
+.settings-palette-btn {
+  flex: 1;
+  padding: 10px 0;
+  background: none;
+  border: none;
+  border-right: 1px solid #ebebeb;
+  font-family: 'Source Sans Pro', -apple-system, sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #767676;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.12s, color 0.12s;
+}
+
+.settings-palette-btn:last-child {
+  border-right: none;
+}
+
+.settings-palette-btn--active {
+  background: #000000;
+  color: #ffffff;
+}
+
+.settings-divider {
+  height: 1px;
+  background: #ebebeb;
+  margin: 4px 0 20px;
+}
+
+.settings-meta {
+  font-family: 'Source Sans Pro', -apple-system, sans-serif;
+  font-size: 0.85rem;
+  color: #767676;
+  margin: 0 0 6px;
+  line-height: 1.5;
+}
+
+.settings-meta--dim {
+  color: #bbbbbb;
+  font-size: 0.78rem;
+  margin-top: 12px;
+}
