@@ -1,0 +1,30 @@
+.style-toggle {
+  display: flex;
+  gap: 0;
+  padding: 0 20px;
+  background: #ffffff;
+  border-bottom: 1px solid #ebebeb;
+  flex-shrink: 0;
+}
+
+.style-toggle__tab {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 10px 16px 9px;
+  font-family: 'Source Sans Pro', -apple-system, sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #767676;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 0.15s, border-color 0.15s;
+  margin-bottom: -1px;
+}
+
+.style-toggle__tab--active {
+  color: #111111;
+  border-bottom-color: #111111;
+}

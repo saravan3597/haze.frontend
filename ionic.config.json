@@ -1,0 +1,7 @@
+{
+  "name": "haze-frontend",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
