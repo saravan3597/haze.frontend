@@ -1,21 +1,24 @@
 .top-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 20px;
-  height: 52px;
+  position: relative;
+  height: calc(52px + env(safe-area-inset-top));
   background: #ffffff;
   border-bottom: 1px solid #ebebeb;
   flex-shrink: 0;
 }
 
-.top-bar__wordmark {
-  font-family: 'Source Sans Pro', -apple-system, sans-serif;
-  font-weight: 700;
-  font-size: 1.25rem;
-  color: #111111;
-  letter-spacing: -0.01em;
+/* Content row pinned below the safe area notch */
+.top-bar__inner {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
 }
+
 
 .top-bar__icon-btn {
   background: none;

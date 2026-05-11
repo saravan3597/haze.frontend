@@ -1,5 +1,5 @@
 {
-  "name": "haze-frontend",
+  "name": "haze",
   "private": true,
   "version": "0.0.1",
   "type": "module",
@@ -12,7 +12,7 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@capacitor-community/media": "github:capacitor-community/media",
+    "@capacitor-community/media": "^9.1.0",
     "@capacitor/android": "^8.3.3",
     "@capacitor/app": "8.1.0",
     "@capacitor/core": "8.3.3",
@@ -21,11 +21,14 @@
     "@capacitor/ios": "^8.3.3",
     "@capacitor/keyboard": "8.0.3",
     "@capacitor/share": "^8.0.1",
+    "@capacitor/splash-screen": "^8.0.1",
     "@capacitor/status-bar": "8.0.2",
+    "@codetrix-studio/capacitor-google-auth": "^3.4.0-rc.4",
     "@ionic/react": "^8.5.0",
     "@ionic/react-router": "^8.5.0",
     "@types/react-router": "^5.1.20",
     "@types/react-router-dom": "^5.3.3",
+    "firebase": "^10.14.1",
     "ionicons": "^7.4.0",
     "react": "19.0.0",
     "react-dom": "19.0.0",
@@ -49,6 +52,7 @@
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^15.15.0",
     "jsdom": "^22.1.0",
+    "sharp": "^0.34.5",
     "terser": "^5.4.0",
     "typescript": "~5.9.0",
     "typescript-eslint": "^8.24.0",
