@@ -1,0 +1,144 @@
+.favorites-page {
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  height: 100%;
+}
+
+.fav-header {
+  position: relative;
+  height: calc(52px + env(safe-area-inset-top));
+  background: #ffffff;
+  border-bottom: 1px solid #ebebeb;
+  flex-shrink: 0;
+}
+
+.fav-header__inner {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+}
+
+.fav-back-btn {
+  background: none;
+  border: none;
+  padding: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  -webkit-tap-highlight-color: transparent;
+  width: 40px;
+}
+
+.fav-title {
+  font-family: 'Source Sans Pro', -apple-system, sans-serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #111111;
+  letter-spacing: -0.01em;
+}
+
+.fav-content {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.fav-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: #767676;
+}
+
+.fav-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 32px;
+  gap: 12px;
+  text-align: center;
+}
+
+.fav-empty-text {
+  font-family: 'Source Sans Pro', -apple-system, sans-serif;
+  font-size: 0.95rem;
+  color: #767676;
+  margin: 0;
+}
+
+.fav-empty-sub {
+  font-family: 'Source Sans Pro', -apple-system, sans-serif;
+  font-size: 0.82rem;
+  color: #bbbbbb;
+  margin: 0;
+}
+
+.fav-signin-btn {
+  margin-top: 8px;
+  padding: 12px 32px;
+  background: #111111;
+  color: #ffffff;
+  border: none;
+  border-radius: 2px;
+  font-family: 'Source Sans Pro', -apple-system, sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.fav-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  padding: 2px;
+}
+
+.fav-item {
+  position: relative;
+  aspect-ratio: 3 / 4;
+}
+
+.fav-thumb-btn {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.fav-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.fav-delete-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 28px;
+  height: 28px;
+  background: rgba(0, 0, 0, 0.55);
+  color: #ffffff;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}

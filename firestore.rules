@@ -1,0 +1,19 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Users can only read/write their own profile and favorites
+    match /users/{uid}/{document=**} {
+      allow read, write: if request.auth != null && request.auth.uid == uid;
+    }
+
+    // Global wallpapers: anyone authenticated can read; writes only via server (or owner-keyed ID)
+    match /wallpapers/{wallpaperId} {
+      allow read: if request.auth != null;
+      // Allow write only if the wallpaperId starts with the caller's uid
+      allow create, update: if request.auth != null
+        && wallpaperId.matches(request.auth.uid + '-.*');
+      allow delete: if false;
+    }
+  }
+}
