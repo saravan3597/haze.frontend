@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
-import { Filesystem, Directory } from '@capacitor/filesystem';
 import { isNative, isIOS, isAndroid } from '../utils/platform';
-import { saveToPhotos, shareForWallpaper } from '../utils/canvasExport';
+import { saveToPhotos } from '../utils/canvasExport';
+import { Wallpaper } from '../plugins/wallpaper';
 
 export type SaveState =
   | { type: 'idle' }
@@ -9,77 +9,83 @@ export type SaveState =
   | { type: 'success'; message: string }
   | { type: 'error'; message: string };
 
+function isPermissionError(e: unknown): boolean {
+  const msg = (e instanceof Error ? e.message : String(e)).toLowerCase();
+  return msg.includes('permission') || msg.includes('denied') || msg.includes('not authorized');
+}
+
 export function useSaveWallpaper(canvasRef: React.RefObject<HTMLCanvasElement>) {
   const [state, setState] = useState<SaveState>({ type: 'idle' });
+  const [showIOSSheet, setShowIOSSheet] = useState(false);
 
   const showMessage = (type: 'success' | 'error', message: string) => {
     setState({ type, message });
-    setTimeout(() => setState({ type: 'idle' }), 2200);
+    setTimeout(() => setState({ type: 'idle' }), 2800);
   };
-
-  const checkPermissions = useCallback(async (): Promise<boolean> => {
-    if (!isNative()) return true;
-    try {
-      let result = await Filesystem.checkPermissions();
-      if (result.publicStorage !== 'granted') {
-        result = await Filesystem.requestPermissions();
-      }
-      if (result.publicStorage !== 'granted') {
-        showMessage(
-          'error',
-          'Photo library access denied. Enable it in Settings → Haze → Photos.',
-        );
-        return false;
-      }
-      return true;
-    } catch {
-      return true; // non-blocking on web
-    }
-  }, []);
 
   const handleSave = useCallback(async () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     setState({ type: 'saving' });
-    const ok = await checkPermissions();
-    if (!ok) return;
     try {
       await saveToPhotos(canvas);
       showMessage('success', 'Saved to Photos');
-    } catch {
-      showMessage('error', 'Save failed — please try again.');
+    } catch (e) {
+      if (isPermissionError(e)) {
+        showMessage(
+          'error',
+          isIOS()
+            ? 'Photos access denied — enable in Settings → Privacy → Photos → Haze.'
+            : 'Storage access denied — enable in Settings → Apps → Haze → Permissions.',
+        );
+      } else {
+        showMessage('error', 'Save failed — please try again.');
+      }
     }
-  }, [canvasRef, checkPermissions]);
+  }, [canvasRef]);
 
   const handleSetWallpaper = useCallback(async () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
     if (isIOS()) {
-      // iOS doesn't allow apps to set wallpapers directly
-      showMessage(
-        'error',
-        'Save to Photos first, then set from the Photos app.',
-      );
+      // iOS can't set wallpapers programmatically.
+      // Save to Photos first, then guide the user.
+      setState({ type: 'saving' });
+      try {
+        await saveToPhotos(canvas);
+      } catch (e) {
+        if (isPermissionError(e)) {
+          showMessage('error', 'Photos access denied — enable in Settings → Privacy → Photos → Haze.');
+          return;
+        }
+        // Non-fatal: still show the sheet even if save failed
+      } finally {
+        setState({ type: 'idle' });
+      }
+      setShowIOSSheet(true);
       return;
     }
 
     if (isAndroid()) {
       setState({ type: 'saving' });
-      const ok = await checkPermissions();
-      if (!ok) return;
       try {
-        await shareForWallpaper(canvas);
-        setState({ type: 'idle' });
-      } catch {
-        showMessage('error', 'Could not open share sheet.');
+        const base64 = canvas.toDataURL('image/png').split(',')[1];
+        await Wallpaper.setWallpaper({ base64 });
+        showMessage('success', 'Wallpaper set!');
+      } catch (e) {
+        if (isPermissionError(e)) {
+          showMessage('error', 'Permission denied — enable in Settings → Apps → Haze → Permissions.');
+        } else {
+          showMessage('error', 'Could not set wallpaper — please try again.');
+        }
       }
       return;
     }
 
     // Web
     showMessage('error', 'Open on your phone to set as wallpaper.');
-  }, [canvasRef, checkPermissions]);
+  }, [canvasRef]);
 
-  return { state, handleSave, handleSetWallpaper };
+  return { state, handleSave, handleSetWallpaper, showIOSSheet, setShowIOSSheet };
 }
