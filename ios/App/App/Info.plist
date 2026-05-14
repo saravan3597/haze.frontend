@@ -34,7 +34,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<!-- REVERSED_CLIENT_ID from GoogleService-Info.plist — required for Google Sign-In OAuth redirect -->
-				<string>com.googleusercontent.apps.871730441706-hmesk0qhorgtggfndbvknkm5fumk3nt6</string>
+				<string>com.googleusercontent.apps.871730441706-ujm2kgrl9iapgn1fco0nuvfbcqpt5mo2</string>
 			</array>
 		</dict>
 	</array>
