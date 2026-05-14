@@ -34,4 +34,4 @@ yarn-error.log*
 
 # For OAUTH files
 android/app/google-services.json
-ios/App/App/GoogleService-info.plist.firebaserc
+ios/App/App/GoogleService-Info.plist
