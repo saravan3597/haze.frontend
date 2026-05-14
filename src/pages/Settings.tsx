@@ -134,7 +134,7 @@ const Settings: React.FC = () => {
 
         <section className="settings-section">
           <p className="settings-meta">Version 1.1.0</p>
-          <p className="settings-meta">Haze — Minimalist wallpapers₹</p>
+          <p className="settings-meta">Haze — Minimalist wallpapers</p>
           <p className="settings-meta settings-meta--dim">
             By Minimalist. For Minimalists.
           </p>

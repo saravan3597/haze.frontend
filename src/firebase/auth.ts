@@ -5,6 +5,7 @@ import {
   signInWithCredential,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  updateProfile,
   signInAnonymously,
   signOut,
   indexedDBLocalPersistence,
@@ -14,6 +15,11 @@ import {
 import { Capacitor } from '@capacitor/core';
 import { FirebaseAuthentication } from '@capacitor-firebase/authentication';
 import { app } from './config';
+
+// Mutable flag — set true before createUserWithEmailAndPassword to prevent
+// AuthContext from processing the auto sign-in that Firebase triggers internally.
+// AuthContext resets it after the first signed-in onAuthStateChanged event.
+export const authFlags = { skipNextSignIn: false };
 
 // On native Capacitor (iOS/Android), use indexedDBLocalPersistence explicitly
 // to avoid WKWebView hanging on auth state initialization.
@@ -39,8 +45,13 @@ export const signInWithGoogle = async () => {
 export const signInWithEmail = (email: string, password: string) =>
   signInWithEmailAndPassword(auth, email, password);
 
-export const signUpWithEmail = (email: string, password: string) =>
-  createUserWithEmailAndPassword(auth, email, password);
+export const signUpWithEmail = async (email: string, password: string, name?: string) => {
+  const cred = await createUserWithEmailAndPassword(auth, email, password);
+  if (name?.trim()) {
+    await updateProfile(cred.user, { displayName: name.trim() });
+  }
+  return cred;
+};
 
 export const signInAsGuest = () => signInAnonymously(auth);
 
