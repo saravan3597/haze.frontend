@@ -12,7 +12,7 @@ import {
   initializeAuth,
 } from 'firebase/auth';
 import { Capacitor } from '@capacitor/core';
-import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth';
+import { FirebaseAuthentication } from '@capacitor-firebase/authentication';
 import { app } from './config';
 
 // On native Capacitor (iOS/Android), use indexedDBLocalPersistence explicitly
@@ -25,11 +25,11 @@ const googleProvider = new GoogleAuthProvider();
 
 export const signInWithGoogle = async () => {
   if (Capacitor.isNativePlatform()) {
-    // On iOS/Android, use the native Google Sign-In plugin (avoids WKWebView popup issues)
-    const googleUser = await GoogleAuth.signIn();
+    // Use native Firebase Authentication plugin (SPM-compatible, reads GoogleService-Info.plist)
+    const result = await FirebaseAuthentication.signInWithGoogle();
     const credential = GoogleAuthProvider.credential(
-      googleUser.authentication.idToken,
-      googleUser.authentication.accessToken,
+      result.credential?.idToken ?? null,
+      result.credential?.accessToken ?? null,
     );
     return signInWithCredential(auth, credential);
   }

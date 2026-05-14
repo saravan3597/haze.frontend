@@ -77,7 +77,7 @@ function splashSvg(size) {
     fill="white"
     text-anchor="middle"
     dominant-baseline="middle"
-    letter-spacing="1.2">haze</text>
+    letter-spacing="1.2">Haze</text>
 </svg>`;
 }
 

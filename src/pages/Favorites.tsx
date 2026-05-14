@@ -3,16 +3,8 @@ import { IonPage, IonSpinner, IonAlert } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
 import { useFavorites } from '../hooks/useFavorites';
 import { useAuth } from '../hooks/useAuth';
-import { draw as drawGradient } from '../generators/gradient';
-import { draw as drawColorblocks } from '../generators/colorblocks';
-import type { StyleId } from '../hooks/useWallpaperGenerator';
-import type { ResolvedPalette } from '../hooks/useWallpaperGenerator';
+import type { StyleId, ResolvedPalette } from '../hooks/useWallpaperGenerator';
 import './Favorites.css';
-
-const GENERATORS: Record<string, (canvas: HTMLCanvasElement, seed: number, palette: ResolvedPalette) => void> = {
-  gradient: drawGradient,
-  colorblocks: drawColorblocks,
-};
 
 const Favorites: React.FC = () => {
   const history = useHistory();
@@ -22,7 +14,7 @@ const Favorites: React.FC = () => {
 
   const handleLoad = useCallback(
     (style: StyleId, seed: number, palette: ResolvedPalette) => {
-      history.push('/home', { favoriteLoad: { style, seed, palette } });
+      history.push('/favorites-viewer', { viewer: { style, seed, palette } });
     },
     [history],
   );

@@ -1,4 +1,4 @@
-package io.ionic.starter;
+package com.saravansomanchi.haze;
 
 import android.os.Bundle;
 import com.getcapacitor.BridgeActivity;

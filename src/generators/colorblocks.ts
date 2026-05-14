@@ -1,6 +1,6 @@
-import { mulberry32 } from '../utils/seededRandom';
+import { mulberry32, compoundSeed, seededShuffle } from '../utils/seededRandom';
 
-export type Palette = 'dark' | 'light';
+export type Palette = 'dark' | 'light' | 'auto';
 
 export interface ColorBlockPalette {
   name: string;
@@ -10,7 +10,7 @@ export interface ColorBlockPalette {
 }
 
 // ---------------------------------------------------------------------------
-// Curated color block palettes
+// Curated color block palettes (22 total — ≥ 20 required)
 // Add new entries here — the seed picks one deterministically.
 // ---------------------------------------------------------------------------
 
@@ -85,87 +85,34 @@ export const COLORBLOCK_PALETTES: ColorBlockPalette[] = [
 ];
 
 // ---------------------------------------------------------------------------
-// Layout templates — Mondrian-style column × row splits
-//
-// Each entry is an array of column definitions. `w` and each value in
-// `rows` are arbitrary relative units that are normalised at draw time.
-// At least one cell in every template covers ≥ 30% of the canvas area.
+// Helpers
 // ---------------------------------------------------------------------------
 
 interface ColumnDef { w: number; rows: number[] }
-
-const LAYOUT_TEMPLATES: ColumnDef[][] = [
-
-  // 5 cells — dominant top-left, right col with 3 rows
-  [
-    { w: 60, rows: [55, 45] },     // largest: 60% × 55% ≈ 33%
-    { w: 40, rows: [35, 30, 35] },
-  ],
-
-  // 4 cells — tall narrow left strip + 3 rows on right
-  [
-    { w: 38, rows: [100] },        // largest: 38% × 100% = 38%
-    { w: 62, rows: [45, 32, 23] },
-  ],
-
-  // 5 cells — left 3 rows, right 2 rows with tall top cell
-  [
-    { w: 45, rows: [40, 35, 25] },
-    { w: 55, rows: [62, 38] },     // largest: 55% × 62% ≈ 34%
-  ],
-
-  // 4 cells — slim left strip, dominant right
-  [
-    { w: 32, rows: [100] },
-    { w: 68, rows: [55, 45] },     // largest: 68% × 55% ≈ 37%
-  ],
-
-  // 4 cells — 2 left rows + tall full-height right strip
-  [
-    { w: 65, rows: [60, 40] },     // largest: 65% × 60% = 39%
-    { w: 35, rows: [100] },
-  ],
-
-  // 4 cells — dominant left takes full height, right split 2
-  [
-    { w: 55, rows: [100] },        // dominant: 55% of canvas area
-    { w: 45, rows: [55, 45] },
-  ],
-
-  // 5 cells — wide left 3 rows, very slim right strip
-  [
-    { w: 55, rows: [55, 25, 20] }, // largest: 55% × 55% ≈ 30%
-    { w: 45, rows: [55, 45] },
-  ],
-
-  // 5 cells — extremely wide dominant left + narrow right 3 rows
-  [
-    { w: 62, rows: [100] },        // dominant: 62% of canvas
-    { w: 38, rows: [40, 35, 25] },
-  ],
-
-  // 4 cells — equal halves, one side full-height
-  [
-    { w: 50, rows: [100] },        // dominant: 50% of canvas
-    { w: 50, rows: [52, 48] },
-  ],
-
-  // 5 cells — asymmetric, left 2 tall rows + right 3 smaller rows
-  [
-    { w: 58, rows: [48, 52] },     // largest: 58% × 52% ≈ 30%
-    { w: 42, rows: [32, 38, 30] },
-  ],
-
-];
-
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
 
 interface Cell {
   x: number; y: number;
   w: number; h: number;
   colIdx: number; rowIdx: number;
+}
+
+/**
+ * Produce n row-height values that are seeded, never uniform, and sum to 100.
+ * Each weight is in the range [0.4, 1.0) so no single row dominates entirely.
+ */
+function seededRowHeights(n: number, rand: () => number): number[] {
+  if (n === 1) return [100];
+  const weights = Array.from({ length: n }, () => 0.4 + rand() * 0.6);
+  const total = weights.reduce((s, w) => s + w, 0);
+  const raw = weights.map(w => (w / total) * 100);
+  const floored = raw.map(Math.floor);
+  let remainder = 100 - floored.reduce((s, v) => s + v, 0);
+  // Distribute rounding remainder to the cells with the largest fractional parts
+  const fracs = raw
+    .map((v, i) => ({ i, f: v - floored[i] }))
+    .sort((a, b) => b.f - a.f);
+  for (let k = 0; k < remainder; k++) floored[fracs[k].i]++;
+  return floored;
 }
 
 function buildCells(template: ColumnDef[], W: number, H: number): Cell[] {
@@ -211,17 +158,42 @@ function pickColor(
 export function draw(canvas: HTMLCanvasElement, seed: number, palette: Palette): void {
   const ctx = canvas.getContext('2d')!;
   const { width: W, height: H } = canvas;
-  const rand = mulberry32(seed);
 
-  // ── 1. Pick palette filtered by mode ──────────────────────────────────────
-  const pool = COLORBLOCK_PALETTES.filter(p => p.mode === palette || p.mode === 'both');
-  const chosen = pool[Math.floor(rand() * pool.length)];
+  // Build compound seed — encodes section (2 = colorblocks) and palette mode
+  const paletteIdx = palette === 'light' ? 1 : palette === 'dark' ? 2 : 0;
+  const cs = compoundSeed(seed, 2, paletteIdx);
+  const rand = mulberry32(cs);
 
-  // ── 2. Pick layout ─────────────────────────────────────────────────────────
-  const template = LAYOUT_TEMPLATES[Math.floor(rand() * LAYOUT_TEMPLATES.length)];
+  // ── 1. Pick palette filtered by mode (direct modulo — guaranteed unique per consecutive offset)
+  const pool = palette === 'auto'
+    ? COLORBLOCK_PALETTES
+    : COLORBLOCK_PALETTES.filter(p => p.mode === palette || p.mode === 'both');
+  const chosen = pool[cs % pool.length];
+
+  // ── 2. Shuffle color order so same palette looks different each time ───────
+  const colors = seededShuffle(chosen.colors, rand);
+
+  // ── 3. Generate layout from seed (never uniform splits) ───────────────────
+  // Total blocks: 4–7
+  const nBlocks = 4 + Math.floor(rand() * 4);
+
+  // Left column width: 30–70% (non-uniform, seeded)
+  const leftW = 30 + Math.floor(rand() * 41);
+  const rightW = 100 - leftW;
+
+  // Distribute blocks: left column gets 1–3 rows, right gets the rest
+  const maxLeftRows = Math.min(3, nBlocks - 1);
+  const leftRowCount = 1 + Math.floor(rand() * maxLeftRows);
+  const rightRowCount = nBlocks - leftRowCount;
+
+  const template: ColumnDef[] = [
+    { w: leftW,  rows: seededRowHeights(leftRowCount, rand) },
+    { w: rightW, rows: seededRowHeights(rightRowCount, rand) },
+  ];
+
   const cells = buildCells(template, W, H);
 
-  // ── 3. Assign colours — no two adjacent cells the same ────────────────────
+  // ── 4. Assign colours — no two adjacent cells the same ────────────────────
   // "Adjacent" means: same column consecutive rows, OR overlapping y-range
   // in the column immediately to the left.
   const placed: { cell: Cell; color: string }[] = [];
@@ -245,11 +217,11 @@ export function draw(canvas: HTMLCanvasElement, seed: number, palette: Palette):
       )
       .forEach(p => forbidden.push(p.color));
 
-    const color = pickColor(chosen.colors, forbidden, rand);
+    const color = pickColor(colors, forbidden, rand);
     placed.push({ cell, color });
   });
 
-  // ── 4. Render — flat colour, no borders ───────────────────────────────────
+  // ── 5. Render — flat colour, no borders ───────────────────────────────────
   placed.forEach(({ cell, color }) => {
     ctx.fillStyle = color;
     ctx.fillRect(cell.x, cell.y, cell.w, cell.h);

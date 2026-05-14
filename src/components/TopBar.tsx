@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useCallback } from 'react';
+import { Haptics, ImpactStyle } from '@capacitor/haptics';
 import './TopBar.css';
 
 interface Props {
@@ -51,23 +52,35 @@ const HeartIcon: React.FC = () => (
   </svg>
 );
 
-const TopBar: React.FC<Props> = ({ onSettingsClick, onFavoritesClick }) => (
-  <header className="top-bar">
-    <div className="top-bar__inner">
-      <button
-        className="top-bar__icon-btn"
-        onClick={onFavoritesClick}
-        aria-label="Favorites"
-        style={{ visibility: onFavoritesClick ? 'visible' : 'hidden' }}
-      >
-        <HeartIcon />
-      </button>
-      <HazeMark size={26} />
-      <button className="top-bar__icon-btn" onClick={onSettingsClick} aria-label="Settings">
-        <GearIcon />
-      </button>
-    </div>
-  </header>
-);
+const TopBar: React.FC<Props> = ({ onSettingsClick, onFavoritesClick }) => {
+  const handleFavoritesClick = useCallback(async () => {
+    try { await Haptics.impact({ style: ImpactStyle.Light }); } catch { /* not available on web */ }
+    onFavoritesClick?.();
+  }, [onFavoritesClick]);
+
+  const handleSettingsClick = useCallback(async () => {
+    try { await Haptics.impact({ style: ImpactStyle.Light }); } catch { /* not available on web */ }
+    onSettingsClick();
+  }, [onSettingsClick]);
+
+  return (
+    <header className="top-bar">
+      <div className="top-bar__inner">
+        <button
+          className="top-bar__icon-btn"
+          onClick={handleFavoritesClick}
+          aria-label="Favorites"
+          style={{ visibility: onFavoritesClick ? 'visible' : 'hidden' }}
+        >
+          <HeartIcon />
+        </button>
+        <HazeMark size={26} />
+        <button className="top-bar__icon-btn" onClick={handleSettingsClick} aria-label="Settings">
+          <GearIcon />
+        </button>
+      </div>
+    </header>
+  );
+};
 
 export default TopBar;

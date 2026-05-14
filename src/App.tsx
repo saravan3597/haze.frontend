@@ -7,6 +7,7 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import Auth from './pages/Auth';
 import Home from './pages/Home';
 import Favorites from './pages/Favorites';
+import FavoritesViewer from './pages/FavoritesViewer';
 import Settings from './pages/Settings';
 
 import '@ionic/react/css/core.css';
@@ -54,6 +55,9 @@ const AppRoutes: React.FC = () => {
       </Route>
       <Route exact path="/favorites">
         {user ? <Favorites /> : <Redirect to="/auth" />}
+      </Route>
+      <Route exact path="/favorites-viewer">
+        {user ? <FavoritesViewer /> : <Redirect to="/auth" />}
       </Route>
       <Route exact path="/settings">
         {user ? <Settings /> : <Redirect to="/auth" />}

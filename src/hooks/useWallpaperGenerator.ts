@@ -3,20 +3,21 @@ import { dateSeed } from '../utils/seededRandom';
 import { WALLPAPER_WIDTH, WALLPAPER_HEIGHT } from '../utils/canvasExport';
 import { draw as drawGradient } from '../generators/gradient';
 import { draw as drawColorblocks } from '../generators/colorblocks';
+import { draw as drawDotgrid } from '../generators/dotgrid';
 
-export type StyleId = 'gradient' | 'colorblocks';
+export type StyleId = 'gradient' | 'colorblocks' | 'dotgrid';
+export type SectionId = 'ai' | StyleId;
 export type PalettePref = 'auto' | 'light' | 'dark';
-export type ResolvedPalette = 'dark' | 'light';
+export type ResolvedPalette = 'dark' | 'light' | 'auto';
 
 export const GENERATORS: Record<StyleId, (canvas: HTMLCanvasElement, seed: number, palette: ResolvedPalette) => void> = {
   gradient: drawGradient,
   colorblocks: drawColorblocks,
+  dotgrid: drawDotgrid,
 };
 
 export function resolvePalette(pref: PalettePref): ResolvedPalette {
-  if (pref === 'auto') {
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-  }
+  // 'auto' passes through — generators draw from the full palette pool (light + dark)
   return pref;
 }
 

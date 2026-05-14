@@ -1,18 +1,36 @@
 .style-toggle {
   display: flex;
   gap: 0;
-  padding: 0 20px;
+  /* Left padding only — right padding is handled by ::after (scroll containers ignore padding-right) */
+  padding: 0 0 0 20px;
   background: #ffffff;
   border-bottom: 1px solid #ebebeb;
   flex-shrink: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
 }
 
+.style-toggle::-webkit-scrollbar {
+  display: none;
+}
+
+
 .style-toggle__tab {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;          /* tabs never compress or wrap */
+  white-space: nowrap;     /* text stays on one line */
   background: none;
   border: none;
   border-bottom: 2px solid transparent;
   padding: 10px 16px 9px;
-  font-family: 'Source Sans Pro', -apple-system, sans-serif;
+  font-family:
+    "Source Sans Pro",
+    -apple-system,
+    sans-serif;
   font-size: 0.82rem;
   font-weight: 600;
   color: #767676;
@@ -20,11 +38,20 @@
   letter-spacing: 0.02em;
   text-transform: uppercase;
   -webkit-tap-highlight-color: transparent;
-  transition: color 0.15s, border-color 0.15s;
+  transition:
+    color 0.15s,
+    border-color 0.15s;
   margin-bottom: -1px;
 }
 
 .style-toggle__tab--active {
   color: #111111;
   border-bottom-color: #111111;
+}
+
+/* Right breathing room — real DOM element, reliable across all WebKit versions */
+.style-toggle__end-spacer {
+  display: block;
+  flex-shrink: 0;
+  width: 20px;
 }

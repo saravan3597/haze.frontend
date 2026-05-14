@@ -9,6 +9,8 @@ interface Props {
   onFavorite?: () => void;
   favorited?: boolean;
   saving: boolean;
+  generateDisabled?: boolean;
+  saveDisabled?: boolean;
 }
 
 const haptic = () => Haptics.impact({ style: ImpactStyle.Light }).catch(() => {});
@@ -86,11 +88,11 @@ const HeartIcon: React.FC<{ filled: boolean }> = ({ filled }) => (
   </svg>
 );
 
-const ActionBar: React.FC<Props> = ({ onGenerate, onSave, onSetWallpaper, onFavorite, favorited = false, saving }) => (
+const ActionBar: React.FC<Props> = ({ onGenerate, onSave, onSetWallpaper, onFavorite, favorited = false, saving, generateDisabled, saveDisabled }) => (
   <div className="action-bar">
-    <ActionBtn icon={<GenerateIcon />} label="Generate" onClick={onGenerate} disabled={saving} />
+    <ActionBtn icon={<GenerateIcon />} label="Generate" onClick={onGenerate} disabled={saving || generateDisabled} />
     <div className="action-bar__divider" />
-    <ActionBtn icon={<SaveIcon />} label="Save" onClick={onSave} disabled={saving} />
+    <ActionBtn icon={<SaveIcon />} label="Save" onClick={onSave} disabled={saving || saveDisabled} />
     {onFavorite && (
       <>
         <div className="action-bar__divider" />
@@ -98,7 +100,7 @@ const ActionBar: React.FC<Props> = ({ onGenerate, onSave, onSetWallpaper, onFavo
       </>
     )}
     <div className="action-bar__divider" />
-    <ActionBtn icon={<WallpaperIcon />} label="Set Wallpaper" onClick={onSetWallpaper} disabled={saving} />
+    <ActionBtn icon={<WallpaperIcon />} label="Set Wallpaper" onClick={onSetWallpaper} disabled={saving || saveDisabled} />
   </div>
 );
 

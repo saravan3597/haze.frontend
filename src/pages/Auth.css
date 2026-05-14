@@ -2,6 +2,13 @@
   background: #ffffff;
 }
 
+.auth-loading {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
 .auth-container {
   display: flex;
   flex-direction: column;
@@ -69,8 +76,12 @@
   font-weight: 600;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
-  transition: background 0.12s;
+  transition: background 0.12s, opacity 0.1s ease;
   min-height: 48px;
+}
+
+.auth-btn:active {
+  opacity: 0.7;
 }
 
 .auth-btn:disabled {

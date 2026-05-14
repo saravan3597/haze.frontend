@@ -30,4 +30,9 @@
   justify-content: center;
   color: #111111;
   -webkit-tap-highlight-color: transparent;
+  transition: transform 0.15s ease-out;
+}
+
+.top-bar__icon-btn:active {
+  transform: scale(0.85);
 }

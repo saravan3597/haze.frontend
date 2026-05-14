@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { isNative, isIOS, isAndroid } from '../utils/platform';
+import { isIOS, isAndroid } from '../utils/platform';
 import { saveToPhotos } from '../utils/canvasExport';
 import { Wallpaper } from '../plugins/wallpaper';
 
@@ -14,7 +14,7 @@ function isPermissionError(e: unknown): boolean {
   return msg.includes('permission') || msg.includes('denied') || msg.includes('not authorized');
 }
 
-export function useSaveWallpaper(canvasRef: React.RefObject<HTMLCanvasElement>) {
+export function useSaveWallpaper(getCanvas: () => HTMLCanvasElement | null) {
   const [state, setState] = useState<SaveState>({ type: 'idle' });
   const [showIOSSheet, setShowIOSSheet] = useState(false);
 
@@ -24,7 +24,7 @@ export function useSaveWallpaper(canvasRef: React.RefObject<HTMLCanvasElement>) 
   };
 
   const handleSave = useCallback(async () => {
-    const canvas = canvasRef.current;
+    const canvas = getCanvas();
     if (!canvas) return;
     setState({ type: 'saving' });
     try {
@@ -42,10 +42,10 @@ export function useSaveWallpaper(canvasRef: React.RefObject<HTMLCanvasElement>) 
         showMessage('error', 'Save failed — please try again.');
       }
     }
-  }, [canvasRef]);
+  }, [getCanvas]);
 
   const handleSetWallpaper = useCallback(async () => {
-    const canvas = canvasRef.current;
+    const canvas = getCanvas();
     if (!canvas) return;
 
     if (isIOS()) {
@@ -85,7 +85,7 @@ export function useSaveWallpaper(canvasRef: React.RefObject<HTMLCanvasElement>) 
 
     // Web
     showMessage('error', 'Open on your phone to set as wallpaper.');
-  }, [canvasRef]);
+  }, [getCanvas]);
 
   return { state, handleSave, handleSetWallpaper, showIOSSheet, setShowIOSSheet };
 }
