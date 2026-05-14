@@ -1,0 +1,162 @@
+.auth-page {
+  background: #ffffff;
+}
+
+.auth-loading {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100%;
+  padding: 48px 32px 64px;
+  text-align: center;
+}
+
+.auth-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.auth-logomark-text {
+  font-family: 'Source Sans Pro', -apple-system, sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #111111;
+  letter-spacing: 0.12em;
+  text-transform: lowercase;
+}
+
+.auth-tagline {
+  font-family: 'Source Sans Pro', -apple-system, sans-serif;
+  font-size: 0.95rem;
+  color: #767676;
+  margin: 0 0 48px;
+}
+
+.auth-actions {
+  width: 100%;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.auth-mode-label {
+  font-family: 'Source Sans Pro', -apple-system, sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #111111;
+  margin: 0 0 4px;
+  text-align: left;
+}
+
+.auth-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 20px;
+  background: #111111;
+  color: #ffffff;
+  border: none;
+  border-radius: 2px;
+  font-family: 'Source Sans Pro', -apple-system, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.12s, opacity 0.1s ease;
+  min-height: 48px;
+}
+
+.auth-btn:active {
+  opacity: 0.7;
+}
+
+.auth-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.auth-btn--google {
+  background: #ffffff;
+  color: #111111;
+  border: 1.5px solid #ebebeb;
+}
+
+.auth-btn--ghost {
+  background: none;
+  color: #767676;
+  border: 1.5px solid #ebebeb;
+}
+
+.auth-btn--guest {
+  background: none;
+  color: #767676;
+  border: none;
+  font-weight: 400;
+  font-size: 0.88rem;
+  padding: 8px 0;
+}
+
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 4px 0;
+  color: #bbbbbb;
+  font-size: 0.8rem;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #ebebeb;
+}
+
+.auth-input {
+  width: 100%;
+  padding: 13px 14px;
+  border: 1.5px solid #ebebeb;
+  border-radius: 2px;
+  font-family: 'Source Sans Pro', -apple-system, sans-serif;
+  font-size: 0.95rem;
+  color: #111111;
+  background: #ffffff;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.12s;
+}
+
+.auth-input:focus {
+  border-color: #111111;
+}
+
+.auth-error {
+  font-family: 'Source Sans Pro', -apple-system, sans-serif;
+  font-size: 0.82rem;
+  color: #c0392b;
+  margin: 0;
+  text-align: left;
+}
+
+.auth-guest-note {
+  font-family: 'Source Sans Pro', -apple-system, sans-serif;
+  font-size: 0.78rem;
+  color: #bbbbbb;
+  margin: 0;
+  line-height: 1.5;
+}

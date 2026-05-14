@@ -1,0 +1,171 @@
+.settings-page {
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  height: 100%;
+}
+
+.settings-header {
+  position: relative;
+  height: calc(52px + env(safe-area-inset-top));
+  background: #ffffff;
+  border-bottom: 1px solid #ebebeb;
+  flex-shrink: 0;
+}
+
+.settings-header__inner {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+}
+
+.settings-back-btn {
+  background: none;
+  border: none;
+  padding: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  -webkit-tap-highlight-color: transparent;
+  width: 40px;
+}
+
+.settings-title-bar {
+  font-family: 'Source Sans Pro', -apple-system, sans-serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #111111;
+  letter-spacing: -0.01em;
+}
+
+.settings-body {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 8px 0;
+}
+
+.settings-section {
+  padding: 20px 24px;
+}
+
+.settings-section-label {
+  font-family: 'Source Sans Pro', -apple-system, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #767676;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin: 0 0 12px;
+}
+
+.settings-account-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.settings-account-name {
+  font-family: 'Source Sans Pro', -apple-system, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #111111;
+  margin: 0;
+}
+
+.settings-account-email {
+  font-family: 'Source Sans Pro', -apple-system, sans-serif;
+  font-size: 0.85rem;
+  color: #767676;
+  margin: 0;
+}
+
+.settings-signin-btn {
+  margin-top: 12px;
+  padding: 11px 24px;
+  background: #111111;
+  color: #ffffff;
+  border: none;
+  border-radius: 2px;
+  font-family: 'Source Sans Pro', -apple-system, sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  align-self: flex-start;
+}
+
+.settings-divider {
+  height: 1px;
+  background: #ebebeb;
+  margin: 0;
+}
+
+.settings-palette-row {
+  display: flex;
+  gap: 0;
+  border: 1px solid #ebebeb;
+}
+
+.settings-palette-btn {
+  flex: 1;
+  padding: 10px 0;
+  background: none;
+  border: none;
+  border-right: 1px solid #ebebeb;
+  font-family: 'Source Sans Pro', -apple-system, sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #767676;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.12s, color 0.12s;
+}
+
+.settings-palette-btn:last-child {
+  border-right: none;
+}
+
+.settings-palette-btn--active {
+  background: #000000;
+  color: #ffffff;
+}
+
+.settings-signout-btn {
+  width: 100%;
+  padding: 13px;
+  background: none;
+  color: #c0392b;
+  border: 1.5px solid #ebebeb;
+  border-radius: 2px;
+  font-family: 'Source Sans Pro', -apple-system, sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.12s;
+}
+
+.settings-signout-btn:disabled {
+  opacity: 0.5;
+}
+
+.settings-meta {
+  font-family: 'Source Sans Pro', -apple-system, sans-serif;
+  font-size: 0.85rem;
+  color: #767676;
+  margin: 0 0 6px;
+  line-height: 1.5;
+}
+
+.settings-meta--dim {
+  color: #bbbbbb;
+  font-size: 0.78rem;
+  margin-top: 8px;
+}

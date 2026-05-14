@@ -1,0 +1,25 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Users can only read/write their own profile, favorites, and usage data.
+    // Anonymous (guest) users are blocked from writes — they cannot save favorites or profiles.
+    // AI usage writes come from the Cloud Function via Admin SDK (bypasses rules).
+    // Guests may read their own usage/ai doc to display remaining generations.
+    match /users/{uid}/{document=**} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow write: if request.auth != null
+        && request.auth.uid == uid
+        && request.auth.token.firebase.sign_in_provider != 'anonymous';
+    }
+
+    // Global wallpapers: any authenticated user can read;
+    // writes are owner-keyed (wallpaperId must start with caller's uid).
+    match /wallpapers/{wallpaperId} {
+      allow read: if request.auth != null;
+      allow create, update: if request.auth != null
+        && wallpaperId.matches(request.auth.uid + '-.*');
+      allow delete: if false;
+    }
+  }
+}

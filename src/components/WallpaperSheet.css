@@ -1,0 +1,80 @@
+.wallpaper-sheet__backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 100;
+  animation: fadeIn 0.2s ease;
+}
+
+.wallpaper-sheet {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 101;
+  background: #ffffff;
+  border-radius: 16px 16px 0 0;
+  padding: 12px 24px calc(env(safe-area-inset-bottom) + 24px);
+  animation: slideUp 0.28s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.wallpaper-sheet__handle {
+  width: 36px;
+  height: 4px;
+  background: #d1d1d1;
+  border-radius: 2px;
+  margin: 0 auto 20px;
+}
+
+.wallpaper-sheet__title {
+  font-family: 'Source Sans Pro', -apple-system, sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #111111;
+  margin: 0 0 10px;
+}
+
+.wallpaper-sheet__body {
+  font-family: 'Source Sans Pro', -apple-system, sans-serif;
+  font-size: 0.9rem;
+  color: #555555;
+  line-height: 1.5;
+  margin: 0 0 16px;
+}
+
+.wallpaper-sheet__steps {
+  font-family: 'Source Sans Pro', -apple-system, sans-serif;
+  font-size: 0.9rem;
+  color: #111111;
+  line-height: 1.9;
+  margin: 0 0 24px;
+  padding-left: 20px;
+}
+
+.wallpaper-sheet__steps strong {
+  font-weight: 600;
+}
+
+.wallpaper-sheet__btn {
+  width: 100%;
+  padding: 14px;
+  background: #111111;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  font-family: 'Source Sans Pro', -apple-system, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}

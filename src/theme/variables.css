@@ -1,0 +1,60 @@
+/* Haze — Unsplash-inspired design tokens */
+
+:root {
+  /* App always uses light UI shell */
+  --ion-background-color: #ffffff;
+  --ion-background-color-rgb: 255, 255, 255;
+
+  --ion-text-color: #111111;
+  --ion-text-color-rgb: 17, 17, 17;
+
+  --ion-color-primary: #000000;
+  --ion-color-primary-rgb: 0, 0, 0;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #111111;
+  --ion-color-primary-tint: #333333;
+
+  --ion-color-secondary: #767676;
+  --ion-color-secondary-rgb: 118, 118, 118;
+  --ion-color-secondary-contrast: #ffffff;
+
+  --ion-toolbar-background: #ffffff;
+  --ion-toolbar-color: #111111;
+  --ion-item-background: #ffffff;
+  --ion-card-background: #ffffff;
+  --ion-border-color: #ebebeb;
+
+  --ion-font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Override Ionic's dark-mode auto-switching — UI is always light */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ion-background-color: #ffffff;
+    --ion-background-color-rgb: 255, 255, 255;
+    --ion-text-color: #111111;
+    --ion-text-color-rgb: 17, 17, 17;
+    --ion-toolbar-background: #ffffff;
+    --ion-item-background: #ffffff;
+    --ion-card-background: #ffffff;
+    --ion-border-color: #ebebeb;
+  }
+}
+
+body {
+  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #ffffff;
+  color: #111111;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Remove Ionic's default box shadows */
+ion-card {
+  box-shadow: none !important;
+  border: 1px solid #ebebeb;
+}
+
+ion-modal {
+  --border-radius: 0;
+}
