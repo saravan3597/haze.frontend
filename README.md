@@ -21,8 +21,6 @@ Built with React + TypeScript, packaged as a native iOS/Android app via Capacito
 |---|---|---|---|
 | <img src=".github/screenshots/gradients.png" width="220"> | <img src=".github/screenshots/color-blocks.png" width="220"> | <img src=".github/screenshots/dot-grid.png" width="220"> | <img src=".github/screenshots/favorites.png" width="220"> |
 
-> Place screenshots in `.github/screenshots/` and update the paths above.
-
 ---
 
 ## Features
