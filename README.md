@@ -19,7 +19,7 @@ Built with React + TypeScript, packaged as a native iOS/Android app via Capacito
 
 | Gradient | Color Blocks | Dot Grid | AI | Favorites |
 |---|---|---|---|
-| ![Gradients](.github/screenshots/gradient.png) | ![Color Blocks](.github/screenshots/gradient.png) | ![Dot Grid](.github/screenshots/dotgrid.png) | ![AI](.github/screenshots/ai.png) | ![Favorites](.github/screenshots/favorites.png) |
+| ![Gradients](.github/screenshots/gradient.png) | ![Color Blocks](.github/screenshots/color-blocks.png) | ![Dot Grid](.github/screenshots/dot-grid.png) | ![Favorites](.github/screenshots/favorites.png) |
 
 > Place screenshots in `.github/screenshots/` and update the paths above.
 
