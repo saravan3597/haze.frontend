@@ -17,9 +17,9 @@ Built with React + TypeScript, packaged as a native iOS/Android app via Capacito
 
 ## Screenshots
 
-| Gradient | Color Blocks | Dot Grid | AI | Favorites |
+| Gradient | Color Blocks | Dot Grid | Favorites |
 |---|---|---|---|
-| ![Gradients](.github/screenshots/gradient.png) | ![Color Blocks](.github/screenshots/color-blocks.png) | ![Dot Grid](.github/screenshots/dot-grid.png) | ![Favorites](.github/screenshots/favorites.png) |
+| <img src=".github/screenshots/gradients.png" width="220"> | <img src=".github/screenshots/color-blocks.png" width="220"> | <img src=".github/screenshots/dot-grid.png" width="220"> | <img src=".github/screenshots/favorites.png" width="220"> |
 
 > Place screenshots in `.github/screenshots/` and update the paths above.
 
