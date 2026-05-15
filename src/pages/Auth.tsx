@@ -7,6 +7,8 @@ import {
   signInWithEmail,
   signUpWithEmail,
   signInAsGuest,
+  signOutUser,
+  authFlags,
 } from "../firebase/auth";
 import { HazeMark } from "../components/TopBar";
 import "./Auth.css";
@@ -19,48 +21,67 @@ const hapticLight = () =>
 const Auth: React.FC = () => {
   const history = useHistory();
   const [mode, setMode] = useState<Mode>("landing");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handle = async (action: () => Promise<unknown>) => {
-    setError("");
-    setLoading(true);
-    try {
-      await action();
-      // Keep loading=true — App.tsx route guard will redirect once onAuthStateChanged fires.
-      // The component will unmount; no need to reset loading on success.
-    } catch (e: unknown) {
-      const msg = e instanceof Error ? e.message : String(e);
-      setError(friendlyError(msg));
-      setLoading(false);
-    }
-  };
+  const resetFields = () => { setName(""); setEmail(""); setPassword(""); setError(""); setSuccessMsg(""); };
 
-  // Guest sign-in creates an anonymous user which doesn't trigger the route guard,
-  // so we navigate explicitly after success.
   const handleGuest = async () => {
-    setError("");
-    setLoading(true);
+    setError(""); setSuccessMsg(""); setLoading(true);
     try {
       await signInAsGuest();
       history.replace("/home");
-      // Keep loading=true until navigation completes
     } catch (e: unknown) {
-      const msg = e instanceof Error ? e.message : String(e);
-      setError(friendlyError(msg));
+      setError(friendlyError(e instanceof Error ? e.message : String(e)));
       setLoading(false);
     }
   };
 
-  const handleGoogle = () => handle(signInWithGoogle);
-  const handleEmailAuth = () =>
-    handle(() =>
-      mode === "signup"
-        ? signUpWithEmail(email, password)
-        : signInWithEmail(email, password),
-    );
+  const handleGoogle = async () => {
+    setError(""); setSuccessMsg(""); setLoading(true);
+    try {
+      await signInWithGoogle();
+      history.replace("/home");
+    } catch (e: unknown) {
+      setError(friendlyError(e instanceof Error ? e.message : String(e)));
+      setLoading(false);
+    }
+  };
+
+  const handleSignIn = async () => {
+    setError(""); setSuccessMsg(""); setLoading(true);
+    try {
+      await signInWithEmail(email, password);
+      history.replace("/home");
+    } catch (e: unknown) {
+      setError(friendlyError(e instanceof Error ? e.message : String(e)));
+      setLoading(false);
+    }
+  };
+
+  const handleSignUp = async () => {
+    setError(""); setSuccessMsg(""); setLoading(true);
+    // Suppress the auto sign-in that Firebase fires after createUserWithEmailAndPassword.
+    // Without this, AuthContext would set user → AppRoutes would redirect to /home →
+    // then signOut would redirect back — causing the jitter/white screen.
+    authFlags.skipNextSignIn = true;
+    try {
+      await signUpWithEmail(email, password, name);
+      await signOutUser();
+      resetFields();
+      setMode("signin");
+      setSuccessMsg("Account created — sign in to continue.");
+    } catch (e: unknown) {
+      authFlags.skipNextSignIn = false; // reset on error so normal sign-in still works
+      setError(friendlyError(e instanceof Error ? e.message : String(e)));
+    } finally {
+      setLoading(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -105,12 +126,7 @@ const Auth: React.FC = () => {
             </button>
             <button
               className="auth-btn auth-btn--ghost"
-              onClick={() => {
-                setMode("signup");
-                setEmail("");
-                setPassword("");
-                setError("");
-              }}
+              onClick={() => { resetFields(); setMode("signup"); }}
               onTouchStart={hapticLight}
             >
               Create Account
@@ -136,6 +152,17 @@ const Auth: React.FC = () => {
             <p className="auth-mode-label">
               {mode === "signin" ? "Sign In" : "Create Account"}
             </p>
+            {successMsg && <p className="auth-success">{successMsg}</p>}
+            {mode === "signup" && (
+              <input
+                className="auth-input"
+                type="text"
+                placeholder="Your name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                autoComplete="name"
+              />
+            )}
             <input
               className="auth-input"
               type="email"
@@ -157,20 +184,15 @@ const Auth: React.FC = () => {
             {error && <p className="auth-error">{error}</p>}
             <button
               className="auth-btn"
-              onClick={handleEmailAuth}
+              onClick={mode === "signin" ? handleSignIn : handleSignUp}
               onTouchStart={hapticLight}
-              disabled={!email || !password}
+              disabled={!email || !password || (mode === "signup" && !name.trim())}
             >
               {mode === "signin" ? "Sign In" : "Create Account"}
             </button>
             <button
               className="auth-btn auth-btn--ghost"
-              onClick={() => {
-                setMode("landing");
-                setEmail("");
-                setPassword("");
-                setError("");
-              }}
+              onClick={() => { resetFields(); setMode("landing"); }}
               onTouchStart={hapticLight}
             >
               Back

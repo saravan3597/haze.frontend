@@ -153,6 +153,14 @@
   text-align: left;
 }
 
+.auth-success {
+  font-family: 'Source Sans Pro', -apple-system, sans-serif;
+  font-size: 0.82rem;
+  color: #1a7a4a;
+  margin: 0;
+  text-align: left;
+}
+
 .auth-guest-note {
   font-family: 'Source Sans Pro', -apple-system, sans-serif;
   font-size: 0.78rem;

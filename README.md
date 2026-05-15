@@ -1,6 +1,6 @@
 # Haze
 
-Haze is a minimalist wallpaper generator for iOS and Android. It produces a new wallpaper every day, seeded by the date — same day, same wallpaper. Four generation modes: smooth gradients, Mondrian-style color blocks, engineered dot grids, and AI-generated scenes powered by Stability AI.
+Haze is a minimalist wallpaper generator for iOS and Android. It produces a new wallpaper every day, seeded by the date — same day, same wallpaper. Four generation modes: smooth gradients, Mondrian-style color blocks, engineered dot grids, and AI-generated scenes powered by Pollinations.ai.
 
 Built with React + TypeScript, packaged as a native iOS/Android app via Capacitor. No design tools required — every wallpaper is generated in-browser using the Canvas API.
 
@@ -17,17 +17,15 @@ Built with React + TypeScript, packaged as a native iOS/Android app via Capacito
 
 ## Screenshots
 
-| Home — Gradient | Home — AI | Dot Grid | Favorites |
+| Gradient | Color Blocks | Dot Grid | Favorites |
 |---|---|---|---|
-| ![Gradient](.github/screenshots/gradient.png) | ![AI](.github/screenshots/ai.png) | ![Dot Grid](.github/screenshots/dotgrid.png) | ![Favorites](.github/screenshots/favorites.png) |
-
-> Place screenshots in `.github/screenshots/` and update the paths above.
+| <img src=".github/screenshots/gradients.png" width="220"> | <img src=".github/screenshots/color-blocks.png" width="220"> | <img src=".github/screenshots/dot-grid.png" width="220"> | <img src=".github/screenshots/favorites.png" width="220"> |
 
 ---
 
 ## Features
 
-- **Four wallpaper modes** — Gradient (26 palettes), Color Blocks (22 Mondrian-style palettes), Dot Grid (20 palettes, 4 variation modes), and AI (Stability AI SDXL, 3 generations/day)
+- **Four wallpaper modes** — Gradient (30 palettes), Color Blocks (22 Mondrian-style palettes), Dot Grid (20 palettes, 4 variation modes), and AI (Pollinations.ai Flux, 3 generations/day)
 - **Date-seeded determinism** — the same seed on the same day always produces the same wallpaper; swipe down to get a fresh variation
 - **Light / Dark / Auto palette** — follows the OS color scheme or can be locked in Settings
 - **Favorites** — save any wallpaper to your Firestore account; tap to reload it at its exact seed

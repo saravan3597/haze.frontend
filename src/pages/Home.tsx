@@ -130,14 +130,21 @@ const Home: React.FC = () => {
     drawDotgrid(canvas, dotgridSeed, resolvedPalette);
   }, [dotgridSeed, resolvedPalette]);
 
-  // ── Draw AI image onto hidden canvas when loaded (for saving) ────────────
-  const handleAIImageLoad = useCallback((e: React.SyntheticEvent<HTMLImageElement>) => {
+  // ── Draw AI image onto hidden canvas when URL is set (for saving) ────────
+  // Using useEffect + new Image() instead of img onLoad because data: URLs fire
+  // the load event synchronously before React attaches the onLoad handler.
+  useEffect(() => {
+    if (!aiImageUrl) return;
     const canvas = aiCanvasRef.current;
     if (!canvas) return;
-    canvas.width = WALLPAPER_WIDTH;
-    canvas.height = WALLPAPER_HEIGHT;
-    canvas.getContext('2d')?.drawImage(e.currentTarget, 0, 0, WALLPAPER_WIDTH, WALLPAPER_HEIGHT);
-  }, []);
+    const img = new Image();
+    img.onload = () => {
+      canvas.width = WALLPAPER_WIDTH;
+      canvas.height = WALLPAPER_HEIGHT;
+      canvas.getContext('2d')?.drawImage(img, 0, 0, WALLPAPER_WIDTH, WALLPAPER_HEIGHT);
+    };
+    img.src = aiImageUrl;
+  }, [aiImageUrl]);
 
   // ── AI generation ─────────────────────────────────────────────────────────
   const triggerAIGeneration = useCallback(async () => {
@@ -376,7 +383,7 @@ const Home: React.FC = () => {
 
                     {/* Image — fades in */}
                     {!aiLoading && aiImageUrl && (
-                      <img src={aiImageUrl} className="ai-image ai-image--fade-in" onLoad={handleAIImageLoad} alt="AI wallpaper" />
+                      <img src={aiImageUrl} className="ai-image ai-image--fade-in" alt="AI wallpaper" />
                     )}
 
                     {/* Empty state */}

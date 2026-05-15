@@ -54,9 +54,26 @@ exports.generateAIWallpaper = functions
     // ── 4. Generate image via Pollinations.ai ─────────────────────────────
     let imageUrl;
     try {
-        const prompt = palette === 'dark'
-            ? 'stunning phone wallpaper dark moody atmosphere, deep space nebula OR volcanic night landscape OR dark misty forest OR moonlit ocean OR neon rain city OR dramatic storm clouds, ultra high quality cinematic lighting rich dark tones, portrait 9:16, no text no people no watermark'
-            : 'stunning phone wallpaper bright airy atmosphere, golden hour landscape OR soft misty mountains OR sunlit coastal cliffs OR spring cherry blossoms OR white minimalist architecture OR calm lake reflection, ultra high quality natural soft lighting clean bright tones, portrait 9:16, no text no people no watermark';
+        const darkPrompts = [
+            'minimalist abstract dark wallpaper, deep navy and charcoal geometric forms, soft gradient bleed, ultra clean composition, matte finish, no text, phone wallpaper 9:16',
+            'dark misty mountain range at blue hour, minimalist, vast negative space, desaturated indigo tones, cinematic, no text, phone wallpaper 9:16',
+            'macro photograph of dark volcanic rock texture, subtle iridescence, extreme close-up, abstract minimal, moody, no text, phone wallpaper 9:16',
+            'deep space nebula, muted purples and blacks, sparse stars, painterly, minimal, no text, phone wallpaper 9:16',
+            'dark abstract fluid art, ink diffusing in water, slow motion freeze, black and deep teal, elegant, no text, phone wallpaper 9:16',
+            'moonlit calm ocean horizon, long exposure, dark navy sky, single thin streak of light, minimal, no text, phone wallpaper 9:16',
+            'dark architectural brutalist concrete surface, dramatic raking light, abstract, minimal, textural, no text, phone wallpaper 9:16',
+        ];
+        const lightPrompts = [
+            'minimalist abstract light wallpaper, soft cream and warm white organic forms, subtle gradient, ultra clean composition, no text, phone wallpaper 9:16',
+            'misty forest at dawn, pale morning light filtering through trees, soft focus, muted sage greens, minimal, airy, no text, phone wallpaper 9:16',
+            'macro photograph of white marble texture, thin grey veining, clean, elegant, minimal, no text, phone wallpaper 9:16',
+            'pale pink cherry blossom branches, soft blurred bokeh background, minimal, light, airy, no text, phone wallpaper 9:16',
+            'aerial view of white sand dunes at golden hour, long shadows, minimal, abstract, warm tones, no text, phone wallpaper 9:16',
+            'calm shallow ocean water, white sand beneath, abstract aerial, pale turquoise and white, minimal, no text, phone wallpaper 9:16',
+            'white minimalist architecture, clean geometric forms, soft natural shadow play, warm light, no text, phone wallpaper 9:16',
+        ];
+        const pool = palette === 'dark' ? darkPrompts : lightPrompts;
+        const prompt = pool[Math.floor(Math.random() * pool.length)];
         const seed = Math.floor(Math.random() * 999999) + 1;
         const url = `${POLLINATIONS_BASE}/${encodeURIComponent(prompt)}?width=640&height=1280&nologo=true&seed=${seed}&model=flux`;
         functions.logger.info('Calling Pollinations.ai', { palette, seed });

@@ -1,7 +1,7 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { onAuthStateChanged, User, updateProfile } from 'firebase/auth';
 import { doc, setDoc, getDoc, serverTimestamp } from 'firebase/firestore';
-import { auth } from '../firebase/auth';
+import { auth, authFlags } from '../firebase/auth';
 import { db } from '../firebase/firestore';
 
 interface AuthContextValue {
@@ -41,6 +41,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (u) => {
+      // During email signup, Firebase auto signs-in the new user which would
+      // cause AppRoutes to redirect to /home before we can show the signin page.
+      // The signup handler sets this flag to suppress that intermediate event.
+      if (u && authFlags.skipNextSignIn) {
+        authFlags.skipNextSignIn = false;
+        return;
+      }
       if (u) {
         try {
           await ensureProfile(u);
